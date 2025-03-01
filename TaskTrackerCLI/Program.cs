@@ -77,6 +77,16 @@ namespace TaskTrackerCLI
                     }
                     break;
 
+                case "search":
+                    if (args.Length < 2) { Console.WriteLine("❌ Error: Provide a search keyword."); return; }
+                    taskManager.SearchTasks(string.Join(" ", args.Skip(1)));
+                    break;
+
+                case "filter":
+                    if (args.Length < 3) { Console.WriteLine("❌ Error: Provide --from and --to dates (YYYY-MM-DD)."); return; }
+                    taskManager.FilterTasksByDate(args[1], args[2]);
+                    break;
+
                 default:
                     Console.WriteLine("Unknown command.");
                     break;

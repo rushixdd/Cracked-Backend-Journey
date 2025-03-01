@@ -96,5 +96,27 @@ namespace TaskTrackerCLI
             SaveTasks();
             Console.WriteLine($"Task {id} marked as {status}.");
         }
+
+        public void SearchTasks(string keyword)
+        {
+            var results = tasks.Where(t => t.Description.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+            Console.WriteLine($"\n🔍 Search Results for '{keyword}':");
+            foreach (var task in results)
+                Console.WriteLine($"[{task.Id}] {task.Description} ({task.Status})");
+        }
+
+        public void FilterTasksByDate(string fromDate, string toDate)
+        {
+            if (!DateTime.TryParse(fromDate, out DateTime from) || !DateTime.TryParse(toDate, out DateTime to))
+            {
+                Console.WriteLine("❌ Invalid date format. Use YYYY-MM-DD.");
+                return;
+            }
+
+            var results = tasks.Where(t => t.CreatedAt >= from && t.CreatedAt <= to);
+            Console.WriteLine($"\n📆 Tasks from {from:yyyy-MM-dd} to {to:yyyy-MM-dd}:");
+            foreach (var task in results)
+                Console.WriteLine($"[{task.Id}] {task.Description} ({task.Status}) - Created: {task.CreatedAt}");
+        }
     }
 }
