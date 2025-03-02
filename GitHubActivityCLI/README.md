@@ -1,4 +1,4 @@
-﻿﻿# 📝 Task Tracker CLI
+﻿﻿# 📝 GitHub Activity CLI
 
 **GitHub Activity CLI** is a simple command-line interface (CLI) to fetch and display the recent activity of a GitHub user.  
 This project helps you practice working with APIs, handling JSON data, and building a CLI application.
