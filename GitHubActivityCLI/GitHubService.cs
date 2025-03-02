@@ -2,13 +2,13 @@
 {
     class GitHubService
     {
-        private static readonly HttpClient client = new HttpClient();
+        private static readonly HttpClient client = new();
 
-        public static async Task FetchGitHubActivity(string username)
+        public static async Task FetchGitHubActivity(string username, string? eventType = null)
         {
-            string url = $"https://api.github.com/users/{username}/events";
+            string url = string.Format(Constants.GitHubApiUrl, username);
 
-            client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0"); // Required for GitHub API
+            client.DefaultRequestHeaders.UserAgent.ParseAdd(Constants.UserAgent); // Required for GitHub API
 
             try
             {
@@ -20,8 +20,8 @@
                     return;
                 }
 
-                string json = await response.Content.ReadAsStringAsync();
-                ActivityParser.ParseAndDisplayActivity(json);
+                string? json = await response.Content.ReadAsStringAsync();
+                ActivityParser.ParseAndDisplayActivity(json, eventType);
             }
             catch (Exception ex)
             {

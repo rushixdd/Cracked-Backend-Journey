@@ -6,39 +6,71 @@ namespace GitHubActivityCLI
 {
     class ActivityParser
     {
-        public static void ParseAndDisplayActivity(string json)
+        public static void ParseAndDisplayActivity(string json, string? eventType = null)
         {
-            JsonArray events = JsonNode.Parse(json)?.AsArray();
-
-            if (events == null || events.Count == 0)
+            try
             {
-                Console.WriteLine("⚠️ No recent activity found.");
-                return;
-            }
+                var events = JsonNode.Parse(json)?.AsArray();
 
-            Console.WriteLine("\n📌 Recent GitHub Activity:");
-
-            foreach (var e in events)
-            {
-                string type = e["type"]?.ToString();
-                string repo = e["repo"]?["name"]?.ToString();
-
-                if (!string.IsNullOrEmpty(type) && !string.IsNullOrEmpty(repo))
+                if (events == null || events.Count == 0)
                 {
-                    Console.WriteLine($"- {FormatEventType(type)} in {repo}");
+                    Console.WriteLine("\u001b[33m⚠ No recent activity found.\u001b[0m"); // Yellow text
+                    return;
                 }
+
+                Console.WriteLine("\u001b[34m══════════════════════════════════════════════════════\u001b[0m");
+                Console.WriteLine("\u001b[36m📌 GitHub Activity:\u001b[0m");
+                Console.WriteLine("\u001b[34m══════════════════════════════════════════════════════\u001b[0m");
+
+                foreach (var ev in events)
+                {
+                    string type = ev?["type"]?.ToString();
+                    string repo = ev?["repo"]?["name"]?.ToString();
+                    string description = GetEventDescription(type);
+
+                    if (!string.IsNullOrEmpty(eventType) && type != eventType)
+                    {
+                        continue; // Skip events that don't match the filter
+                    }
+
+                    string eventColor = GetEventColor(type);
+                    Console.WriteLine($"{eventColor}▶ {description}\u001b[0m → \u001b[32m{repo}\u001b[0m");
+                }
+
+                Console.WriteLine("\u001b[34m══════════════════════════════════════════════════════\u001b[0m");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error parsing activity: {ex.Message}");
             }
         }
 
-        private static string FormatEventType(string type)
+        private static string GetEventDescription(string eventType)
         {
-            return type switch
+            return eventType switch
             {
                 "PushEvent" => "Pushed commits",
-                "IssuesEvent" => "Opened an issue",
-                "WatchEvent" => "Starred a repo",
-                "ForkEvent" => "Forked a repo",
-                _ => "Performed an activity"
+                "PullRequestEvent" => "Created or updated a pull request",
+                "IssuesEvent" => "Opened or commented on an issue",
+                "ForkEvent" => "Forked a repository",
+                "WatchEvent" => "Starred a repository",
+                "CreateEvent" => "Created a branch or repository",
+                "DeleteEvent" => "Deleted a branch or repository",
+                "ReleaseEvent" => "Published a new release",
+                _ => "Performed an action"
+            };
+        }
+
+        private static string GetEventColor(string eventType)
+        {
+            return eventType switch
+            {
+                "PushEvent" => "\u001b[32m", // Green
+                "PullRequestEvent" => "\u001b[35m", // Purple
+                "IssuesEvent" => "\u001b[33m", // Yellow
+                "ForkEvent" => "\u001b[36m", // Cyan
+                "WatchEvent" => "\u001b[34m", // Blue
+                _ => "\u001b[37m" // White
             };
         }
     }
