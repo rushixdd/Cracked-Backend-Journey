@@ -6,8 +6,9 @@ namespace GitHubActivityCLI
 {
     class ActivityParser
     {
-        public static void ParseAndDisplayActivity(string json, string? eventType = null)
+        public static List<string> ParseAndDisplayActivity(string json, string? eventType = null)
         {
+            var formattedEvents = new List<string>();
             try
             {
                 var events = JsonNode.Parse(json)?.AsArray();
@@ -15,7 +16,7 @@ namespace GitHubActivityCLI
                 if (events == null || events.Count == 0)
                 {
                     Console.WriteLine("\u001b[33m⚠ No recent activity found.\u001b[0m"); // Yellow text
-                    return;
+                    return formattedEvents;
                 }
 
                 Console.WriteLine("\u001b[34m══════════════════════════════════════════════════════\u001b[0m");
@@ -35,6 +36,7 @@ namespace GitHubActivityCLI
 
                     string eventColor = GetEventColor(type);
                     Console.WriteLine($"{eventColor}▶ {description}\u001b[0m → \u001b[32m{repo}\u001b[0m");
+                    formattedEvents.Add($"▶ {description} → {repo}");
                 }
 
                 Console.WriteLine("\u001b[34m══════════════════════════════════════════════════════\u001b[0m");
@@ -43,6 +45,8 @@ namespace GitHubActivityCLI
             {
                 Console.WriteLine($"❌ Error parsing activity: {ex.Message}");
             }
+
+            return formattedEvents;
         }
 
         private static string GetEventDescription(string eventType)

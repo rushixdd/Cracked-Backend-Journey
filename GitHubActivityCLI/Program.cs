@@ -12,9 +12,12 @@ namespace GitHubActivityCLI
             }
 
             string username = args[0];
-            string? eventType = args.Length > 1 ? args[1] : null; // Optional event type filter
+            string? eventType = args.Length > 1 ? args[1] : null;
 
-            await GitHubService.FetchGitHubActivity(username, eventType);
+            HttpClient httpClient = new HttpClient();
+            GitHubService gitHubService = new GitHubService(httpClient);
+
+            await gitHubService.FetchGitHubActivity(username, eventType);
         }
     }
 }
