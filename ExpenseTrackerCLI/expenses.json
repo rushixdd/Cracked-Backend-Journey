@@ -3,18 +3,21 @@
     "Id": 1,
     "Description": "Lunch",
     "Amount": 30,
-    "Date": "2025-03-03T18:28:37.5494009+05:30"
+    "Date": "2025-03-03T18:28:37.5494009+05:30",
+    "Category": ""
   },
   {
     "Id": 3,
-    "Description": "Dinner",
+    "Description": "Travel",
     "Amount": 32,
-    "Date": "2025-03-03T18:36:49.4338264+05:30"
+    "Date": "2025-03-03T18:36:49.4338264+05:30",
+    "Category": ""
   },
   {
     "Id": 4,
     "Description": "Dinner",
     "Amount": 35,
-    "Date": "2025-03-03T18:49:46.8422037+05:30"
+    "Date": "2025-03-03T18:49:46.8422037+05:30",
+    "Category": ""
   }
 ]

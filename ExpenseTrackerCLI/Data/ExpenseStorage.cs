@@ -2,27 +2,33 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Xml.Linq;
 using ExpenseTrackerCLI.Models;
 
 namespace ExpenseTrackerCLI.Data
 {
-    public static class ExpenseStorage
+    public class ExpenseStorage
     {
-        private static readonly string FilePath = "expenses.json";
-
-        public static List<Expense> LoadExpenses()
+        private string filePath = "expenses.json";
+        public string FilePath
         {
-            if (!File.Exists(FilePath))
-                return new List<Expense>();
-
-            var json = File.ReadAllText(FilePath);
-            return JsonSerializer.Deserialize<List<Expense>>(json) ?? new List<Expense>();
+            get { return filePath; }
+            set { filePath = value; }
         }
 
-        public static void SaveExpenses(List<Expense> expenses)
+        public List<Expense> LoadExpenses()
+        {
+            if (!File.Exists(filePath))
+                return [];
+
+            var json = File.ReadAllText(filePath);
+            return JsonSerializer.Deserialize<List<Expense>>(json) ?? [];
+        }
+
+        public void SaveExpenses(List<Expense> expenses)
         {
             var json = JsonSerializer.Serialize(expenses, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(FilePath, json);
+            File.WriteAllText(filePath, json);
         }
     }
 }

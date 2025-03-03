@@ -1,4 +1,4 @@
-﻿namespace ExpenseTrackerCLI.Services
+﻿namespace ExpenseTrackerCLI.Data
 {
     public class BudgetService
     {
