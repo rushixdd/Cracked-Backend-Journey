@@ -2,7 +2,7 @@
 {
     class Scoreboard
     {
-        private int bestScore = int.MaxValue;
+        private int bestScore = HighScoreManager.LoadHighScore();
 
         public void UpdateHighScore(int attempts)
         {
@@ -10,6 +10,7 @@
             {
                 bestScore = attempts;
                 Console.WriteLine($"🏆 New High Score: {bestScore} attempts!");
+                HighScoreManager.SaveHighScore(attempts);
             }
         }
 
