@@ -1,6 +1,6 @@
-﻿namespace ExpenseTrackerCLI.Services
+﻿namespace ExpenseTrackerCLI.Data
 {
-    public class BudgetService
+    public class BudgetService : IBudgetService
     {
         private const string BudgetFile = "budget.json";
 

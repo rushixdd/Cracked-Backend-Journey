@@ -11,18 +11,23 @@ namespace ExpenseTrackerCLI.Services
 {
     public class ExpenseService
     {
-        private List<Expense> expenses;
+        private readonly List<Expense> expenses;
+        private readonly IExpenseStorage expenseStorage;
+        private readonly IBudgetService budgetService;
 
-        public ExpenseService()
+        public ExpenseService(IExpenseStorage expenseStorage, IBudgetService budgetService)
         {
-            expenses = ExpenseStorage.LoadExpenses();
+            this.expenseStorage = expenseStorage;
+            this.budgetService = budgetService;
+            expenses = this.expenseStorage.LoadExpenses();
         }
+
 
         public void AddExpense(string description, decimal amount, string category = "Uncategorized")
         {
             int id = expenses.Count > 0 ? expenses.Max(e => e.Id) + 1 : 1;
 
-            Expense newExpense = new Expense
+            Expense newExpense = new()
             {
                 Id = id,
                 Description = description,
@@ -32,11 +37,11 @@ namespace ExpenseTrackerCLI.Services
             };
 
             expenses.Add(newExpense);
-            ExpenseStorage.SaveExpenses(expenses);
+            this.expenseStorage.SaveExpenses(expenses);
             Console.WriteLine($"✅ Expense added successfully (ID: {id}, Category: {category})");
         }
 
-        public void ListExpenses()
+        public void ListExpenses(string sortBy = "default")
         {
             if (expenses.Count == 0)
             {
@@ -44,17 +49,49 @@ namespace ExpenseTrackerCLI.Services
                 return;
             }
 
-            Console.WriteLine("═══════════════════════════════════════════════════");
-            Console.WriteLine($"{"ID",-5} {"Date",-12} {"Description",-20} {"Amount",-8}");
-            Console.WriteLine("═══════════════════════════════════════════════════");
-
-            foreach (var expense in expenses)
+            List<Expense> sortedExpenses = [.. expenses];
+            sortedExpenses = sortBy.ToLower() switch
             {
-                Console.WriteLine($"{expense.Id,-5} {expense.Date.ToString("d"),-12} {expense.Description,-20} ₹{expense.Amount,-8:F2}");
+                "date" => [.. sortedExpenses.OrderByDescending(e => e.Date)],
+                "amount" => [.. sortedExpenses.OrderByDescending(e => e.Amount)],
+                _ => [.. sortedExpenses.OrderBy(e => e.Date)],
+            };
+            Console.WriteLine("\n=====================================================");
+            Console.WriteLine("  ID    Date          Description      Amount  ");
+            Console.WriteLine("=====================================================");
+
+            foreach (var expense in sortedExpenses)
+            {
+                Console.WriteLine($"{expense.Id,-5} {expense.Date:yyyy-MM-dd}   {expense.Description,-15} ₹{expense.Amount,8:F2}");
             }
 
-            Console.WriteLine("═══════════════════════════════════════════════════");
+            Console.WriteLine("=====================================================\n");
         }
+
+        public void UpdateExpense(int id, decimal? newAmount = null, string? newDescription = null, string? newCategory = null)
+        {
+            if (expenses.Count == 0 || expenses.All(e => e.Id != id))
+            {
+                Console.WriteLine($"❌ Expense with ID {id} not found.");
+                return;
+            }
+
+            var expense = expenses.First(e => e.Id == id);
+
+            if (newAmount.HasValue)
+                expense.Amount = newAmount.Value;
+
+            if (!string.IsNullOrEmpty(newDescription))
+                expense.Description = newDescription;
+
+            if (!string.IsNullOrEmpty(newCategory))
+                expense.Category = newCategory;
+
+            this.expenseStorage.SaveExpenses(expenses);
+            Console.WriteLine($"✅ Expense updated successfully (ID: {id}, Category: {expense.Category})");
+        }
+
+
 
         public void DeleteExpense(int id)
         {
@@ -62,7 +99,7 @@ namespace ExpenseTrackerCLI.Services
             if (expense != null)
             {
                 expenses.Remove(expense);
-                ExpenseStorage.SaveExpenses(expenses);
+                this.expenseStorage.SaveExpenses(expenses);
                 Console.WriteLine($"✅ Expense deleted successfully (ID: {id})");
             }
             else
@@ -73,30 +110,55 @@ namespace ExpenseTrackerCLI.Services
 
         public void ShowSummary()
         {
-            decimal total = expenses.Sum(e => e.Amount);
-            Console.WriteLine($"💰 Total expenses: ₹{total}");
+            decimal totalExpense = expenses.Sum(e => e.Amount);
+            Console.WriteLine("\n=========================");
+            Console.WriteLine("   Expense Summary");
+            Console.WriteLine("=========================");
+            Console.WriteLine($"Total Expenses: ₹{totalExpense}");
+            ApplyBudgetWarnings(totalExpense, new BudgetService().GetBudget());
+
+            Console.WriteLine("=========================\n");
         }
 
         public void ShowMonthlySummary(int month)
         {
-            var expenses = ExpenseStorage.LoadExpenses().Where(e => e.Date.Month == month && e.Date.Year == DateTime.Now.Year).ToList();
-            decimal total = expenses.Sum(e => e.Amount);
-            decimal budget = new BudgetService().GetBudget();
+            var monthlyExpenses = expenses
+        .Where(e => e.Date.Month == month && e.Date.Year == DateTime.Now.Year)
+        .ToList();
 
-            Console.WriteLine("═══════════════════════════════════════════════════");
-            Console.WriteLine($"📅 Summary for {CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)} {DateTime.Now.Year}");
-            Console.WriteLine("═══════════════════════════════════════════════════");
-            Console.WriteLine($"💰 Total expenses: ₹{total:F2}");
+            decimal totalMonthlyExpense = monthlyExpenses.Sum(e => e.Amount);
 
+            Console.WriteLine($"\n=========================");
+            Console.WriteLine($"  Summary for {new DateTime(DateTime.Now.Year, month, 1):MMMM}");
+            Console.WriteLine("=========================");
+            Console.WriteLine($"Total Expenses: ₹{totalMonthlyExpense}");
+            ApplyBudgetWarnings(totalMonthlyExpense, new BudgetService().GetBudget());
+            Console.WriteLine("=========================\n");
+        }
+
+        private void ApplyBudgetWarnings(decimal totalExpense, decimal budget)
+        {
             if (budget > 0)
             {
-                Console.WriteLine($"🎯 Budget: ₹{budget:F2}");
-                if (total > budget)
+                decimal percentageUsed = (totalExpense / budget) * 100;
+
+                if (totalExpense > budget)
                 {
-                    Console.WriteLine($"🚨 Warning: You exceeded your budget by ₹{(total - budget):F2}!");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"🔴 WARNING: You have exceeded your budget of ₹{budget}!");
                 }
+                else if (percentageUsed >= 90)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"🟡 ALERT: You have used {percentageUsed:F1}% of your budget (₹{budget}).");
+                }
+                Console.ResetColor();
             }
-            Console.WriteLine("═══════════════════════════════════════════════════");
+        }
+
+        public Expense? GetExpenseById(int id)
+        {
+            return expenses.FirstOrDefault(e => e.Id == id);
         }
     }
 }
