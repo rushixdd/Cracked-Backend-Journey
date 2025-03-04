@@ -7,7 +7,7 @@ using ExpenseTrackerCLI.Models;
 
 namespace ExpenseTrackerCLI.Data
 {
-    public class ExpenseStorage
+    public class ExpenseStorage : IExpenseStorage
     {
         private string filePath = "expenses.json";
         public string FilePath
@@ -19,10 +19,10 @@ namespace ExpenseTrackerCLI.Data
         public List<Expense> LoadExpenses()
         {
             if (!File.Exists(filePath))
-                return [];
+                return new List<Expense>();
 
             var json = File.ReadAllText(filePath);
-            return JsonSerializer.Deserialize<List<Expense>>(json) ?? [];
+            return JsonSerializer.Deserialize<List<Expense>>(json) ?? new List<Expense>();
         }
 
         public void SaveExpenses(List<Expense> expenses)

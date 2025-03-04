@@ -12,10 +12,10 @@ namespace ExpenseTrackerCLI.Services
     public class ExpenseService
     {
         private readonly List<Expense> expenses;
-        private readonly ExpenseStorage expenseStorage;
-        private readonly BudgetService budgetService;
+        private readonly IExpenseStorage expenseStorage;
+        private readonly IBudgetService budgetService;
 
-        public ExpenseService(ExpenseStorage expenseStorage, BudgetService budgetService)
+        public ExpenseService(IExpenseStorage expenseStorage, IBudgetService budgetService)
         {
             this.expenseStorage = expenseStorage;
             this.budgetService = budgetService;
