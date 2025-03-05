@@ -1,0 +1,55 @@
+﻿@page
+@model LengthModel
+@{
+    ViewData["Title"] = "Length Converter";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center">Length Converter</h2>
+
+    <form method="post">
+        <div class="mb-3">
+            <label for="Value" class="form-label">Enter Value:</label>
+            <input type="number" asp-for="InputValue" class="form-control" required />
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label for="FromUnit" class="form-label">From:</label>
+                <select asp-for="FromUnit" class="form-select">
+                    <option value="mm">Millimeter</option>
+                    <option value="m">Meter</option>
+                    <option value="km">Kilometer</option>
+                    <option value="cm">Centimeter</option>
+                    <option value="inch">Inch</option>
+                    <option value="foot">Foot</option>
+                    <option value="yard">Yard</option>
+                    <option value="mile">Mile</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="ToUnit" class="form-label">To:</label>
+                <select asp-for="ToUnit" class="form-select">
+                    <option value="mm">Millimeter</option>
+                    <option value="m">Meter</option>
+                    <option value="km">Kilometer</option>
+                    <option value="cm">Centimeter</option>
+                    <option value="inch">Inch</option>
+                    <option value="foot">Foot</option>
+                    <option value="yard">Yard</option>
+                    <option value="mile">Mile</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3 w-100">Convert</button>
+    </form>
+
+    @if (Model.Result != null)
+    {
+        <div class="alert alert-success mt-3">
+            <strong>Result:</strong> @Model.Result
+        </div>
+    }
+</div>
