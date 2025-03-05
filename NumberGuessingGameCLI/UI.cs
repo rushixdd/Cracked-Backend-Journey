@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace NumberGuessingGameCLI
 {
-    public static class UI
+    public class UI : IUI
     {
-        public static void ShowWelcomeMessage()
+        public void ShowWelcomeMessage()
         {
             Console.WriteLine("\n🎮 Welcome to the Number Guessing Game!");
             Console.WriteLine("Try to guess the number between 1 and 100.");
         }
 
-        public static int GetUserGuess()
+        public int GetUserGuess()
         {
             Console.Write("\nEnter your guess: ");
             int guess;
@@ -27,7 +27,7 @@ namespace NumberGuessingGameCLI
             return guess;
         }
 
-        public static void ShowHint(int guess, int secretNumber)
+        public void ShowHint(int guess, int secretNumber)
         {
             if (guess < secretNumber)
                 Console.WriteLine("🔼 Try a higher number.");
@@ -35,18 +35,18 @@ namespace NumberGuessingGameCLI
                 Console.WriteLine("🔽 Try a lower number.");
         }
 
-        public static void ShowWinMessage(int attempts, string timeTaken)
+        public void ShowWinMessage(int attempts, string timeTaken)
         {
             Console.WriteLine($"\n🎉 Congratulations! You guessed the number in {attempts} attempts.");
             Console.WriteLine($"⏱️ Time taken: {timeTaken}");
         }
 
-        public static void ShowLoseMessage(int secretNumber)
+        public void ShowLoseMessage(int secretNumber)
         {
             Console.WriteLine($"\n❌ You ran out of attempts! The number was {secretNumber}.");
         }
 
-        public static bool AskToPlayAgain()
+        public bool AskToPlayAgain()
         {
             Console.Write("\nDo you want to play again? (yes/no): ");
             return Console.ReadLine()?.Trim().ToLower() == "yes";

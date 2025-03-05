@@ -14,25 +14,27 @@ namespace NumberGuessingGameCLI
         private HintSystem hintSystem;
         private Scoreboard scoreboard;
         private GameTimer gameTimer;
+        private IUI ui;
 
-        public Game()
+        public Game(NumberGenerator numberGenerator, Difficulty difficulty, HintSystem hintSystem, Scoreboard scoreboard, GameTimer gameTimer, IUI ui)
         {
-            numberGenerator = new NumberGenerator();
-            difficulty = new Difficulty();
-            hintSystem = new HintSystem();
-            scoreboard = new Scoreboard();
-            gameTimer = new GameTimer();
+            this.numberGenerator = numberGenerator;
+            this.difficulty = difficulty;
+            this.hintSystem = hintSystem;
+            this.scoreboard = scoreboard;
+            this.gameTimer = gameTimer;
+            this.ui = ui;
         }
 
         public void Start()
         {
-            UI.ShowWelcomeMessage();
+            ui.ShowWelcomeMessage();
             bool playAgain = true;
 
             while (playAgain)
             {
                 Play();
-                playAgain = UI.AskToPlayAgain();
+                playAgain = ui.AskToPlayAgain();
             }
         }
 
@@ -45,24 +47,24 @@ namespace NumberGuessingGameCLI
 
             while (attempts < maxAttempts)
             {
-                int userGuess = UI.GetUserGuess();
+                int userGuess = ui.GetUserGuess();
                 attempts++;
 
                 if (userGuess == secretNumber)
                 {
                     gameTimer.Stop();
-                    UI.ShowWinMessage(attempts, gameTimer.ElapsedTime());
+                    ui.ShowWinMessage(attempts, gameTimer.ElapsedTime());
                     scoreboard.UpdateHighScore(attempts);
                     return;
                 }
                 else
                 {
-                    UI.ShowHint(userGuess, secretNumber);
+                    ui.ShowHint(userGuess, secretNumber);
                     hintSystem.ProvideHint(userGuess, secretNumber);
                 }
             }
 
-            UI.ShowLoseMessage(secretNumber);
+            ui.ShowLoseMessage(secretNumber);
         }
     }
 }

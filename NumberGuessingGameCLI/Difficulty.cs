@@ -2,7 +2,7 @@
 {
     public class Difficulty
     {
-        public int SelectDifficulty()
+        public virtual int SelectDifficulty()
         {
             Console.WriteLine("\nChoose Difficulty Level:");
             Console.WriteLine("1. Easy (10 attempts)");

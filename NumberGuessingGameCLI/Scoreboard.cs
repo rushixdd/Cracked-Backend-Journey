@@ -2,9 +2,19 @@
 {
     class Scoreboard
     {
-        private int bestScore = HighScoreManager.LoadHighScore();
+        private int bestScore;
 
-        public void UpdateHighScore(int attempts)
+        public Scoreboard()
+        {
+            bestScore = HighScoreManager.LoadHighScore();
+        }
+
+        public Scoreboard(int initialBestScore)
+        {
+            bestScore = initialBestScore;
+        }
+
+        public virtual void UpdateHighScore(int attempts)
         {
             if (attempts < bestScore)
             {
@@ -13,6 +23,5 @@
                 HighScoreManager.SaveHighScore(attempts);
             }
         }
-
     }
 }

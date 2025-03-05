@@ -4,7 +4,12 @@ namespace NumberGuessingGameCLI
 {
     class HighScoreManager
     {
-        private const string FilePath = "highscores.json";
+        private static string FilePath = "highscores.json";
+
+        public static void SetFilePath(string filePath)
+        {
+            FilePath = filePath;
+        }
 
         public static int LoadHighScore()
         {

@@ -2,7 +2,7 @@
 {
     class HintSystem
     {
-        public void ProvideHint(int guess, int secretNumber)
+        public virtual void ProvideHint(int guess, int secretNumber)
         {
             if (Math.Abs(secretNumber - guess) <= 5)
                 Console.WriteLine("🔥 Very close!");
@@ -11,6 +11,5 @@
             else
                 Console.WriteLine("❄️ Far away!");
         }
-
     }
 }
