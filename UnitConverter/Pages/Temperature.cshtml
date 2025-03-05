@@ -1,0 +1,45 @@
+﻿@page
+@model TemperatureModel
+@{
+    ViewData["Title"] = "Temperature Converter";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center">Temperature Converter</h2>
+
+    <form method="post">
+        <div class="mb-3">
+            <label for="Value" class="form-label">Enter Value:</label>
+            <input type="number" asp-for="InputValue" class="form-control" required />
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label for="FromUnit" class="form-label">From:</label>
+                <select asp-for="FromUnit" class="form-select">
+                    <option value="celsius">Celsius</option>
+                    <option value="fahrenheit">Fahrenheit</option>
+                    <option value="kelvin">Kelvin</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="ToUnit" class="form-label">To:</label>
+                <select asp-for="ToUnit" class="form-select">
+                    <option value="celsius">Celsius</option>
+                    <option value="fahrenheit">Fahrenheit</option>
+                    <option value="kelvin">Kelvin</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-warning mt-3 w-100">Convert</button>
+    </form>
+
+    @if (Model.Result != null)
+    {
+        <div class="alert alert-success mt-3">
+            <strong>Result:</strong> @Model.Result
+        </div>
+    }
+</div>
