@@ -1,0 +1,28 @@
+﻿@page
+@model PersonalBlog.Pages.Admin.DashboardModel
+
+<h1>Admin Dashboard</h1>
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Actions</th>
+    </tr>
+    @foreach (var article in Model.Articles)
+    {
+        <tr>
+            <td>@article.Title</td>
+            <td>@article.PublishedDate.ToString("yyyy-MM-dd")</td>
+            <td>
+                <a asp-page="/Admin/EditArticle" asp-route-id="@article.Id">Edit</a>
+                <form method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="@article.Id" />
+                    <button type="submit" asp-page-handler="Delete">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+
+<a asp-page="/Admin/AddArticle">Add New Article</a>
