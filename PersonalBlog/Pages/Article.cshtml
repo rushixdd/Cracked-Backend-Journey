@@ -1,0 +1,17 @@
+﻿@page "{id}"
+@model PersonalBlog.Pages.ArticleModel
+@{
+    ViewData["Title"] = Model.Article?.Title ?? "Article Not Found";
+}
+
+@if (Model.Article == null)
+{
+    <h1>Article Not Found</h1>
+}
+else
+{
+    <h1>@Model.Article.Title</h1>
+    <p><small>Published on @Model.Article.PublishedDate.ToString("MMMM dd, yyyy")</small></p>
+    <hr />
+    <p>@Model.Article.Content</p>
+}
