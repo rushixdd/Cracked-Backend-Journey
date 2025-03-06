@@ -1,0 +1,19 @@
+﻿@page
+@model PersonalBlog.Pages.Admin.AddModel
+@{
+    ViewData["Title"] = "Add Article";
+}
+
+<h1>Add New Article</h1>
+
+<form method="post">
+    <label>Title:</label>
+    <input type="text" asp-for="Article.Title" required />
+
+    <label>Content:</label>
+    <textarea asp-for="Article.Content" required></textarea>
+
+    <button type="submit">Publish</button>
+</form>
+
+<a asp-page="/Admin/Dashboard">Back to Dashboard</a>
