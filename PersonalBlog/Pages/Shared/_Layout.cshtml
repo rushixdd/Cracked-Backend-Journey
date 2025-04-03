@@ -22,9 +22,24 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Login">Admin Login</a>
-                        </li>
+                         @if (Context.Session.GetString("IsAdmin") != "true")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Admin/Login">Admin Login</a>
+                            </li>
+                        }
+                        @if (Context.Session.GetString("IsAdmin") == "true")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-page="/Admin/Dashboard">Admin Dashboard</a>
+                            </li>
+                        }
+                        @if (Context.Session.GetString("IsAdmin") == "true")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-page="/Admin/Logout">Logout</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
