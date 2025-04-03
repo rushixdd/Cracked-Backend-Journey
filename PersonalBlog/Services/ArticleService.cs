@@ -1,61 +1,71 @@
 ﻿using System.Text.Json;
 using PersonalBlog.Models;
+using PersonalBlog.Pages;
 
 namespace PersonalBlog.Services
 {
     public class ArticleService
     {
-        private readonly string _articlesPath = "Data/articles.json";
+        private readonly string _articlesDirectory = "Data/Articles";
 
         public ArticleService()
         {
-            if (!File.Exists(_articlesPath))
+            if (!Directory.Exists(_articlesDirectory))
             {
-                Directory.CreateDirectory("Data");
-                File.WriteAllText(_articlesPath, "[]");
+                Directory.CreateDirectory(_articlesDirectory);
             }
         }
 
         public List<Article> GetAllArticles()
         {
-            var json = File.ReadAllText(_articlesPath);
-            return JsonSerializer.Deserialize<List<Article>>(json) ?? new List<Article>();
+            var files = Directory.GetFiles(_articlesDirectory, "*.json");
+            var articles = new List<Article>();
+
+            foreach (var file in files)
+            {
+                var json = File.ReadAllText(file);
+                var article = JsonSerializer.Deserialize<Article>(json);
+                if (article != null)
+                {
+                    articles.Add(article);
+                }
+            }
+
+            return articles.OrderByDescending(a => a.PublishedDate).ToList();
         }
 
         public Article? GetArticleById(string id)
         {
-            return GetAllArticles().FirstOrDefault(a => a.Id == id);
+            var filePath = Path.Combine(_articlesDirectory, $"{id}.json");
+            if (!File.Exists(filePath)) return null;
+
+            var json = File.ReadAllText(filePath);
+            return JsonSerializer.Deserialize<Article>(json);
         }
 
         public void AddArticle(Article article)
         {
-            var articles = GetAllArticles();
-            articles.Add(article);
-            SaveArticles(articles);
+            var filePath = Path.Combine(_articlesDirectory, $"{article.Id}.json");
+            var json = JsonSerializer.Serialize(article, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(filePath, json);
         }
 
         public void UpdateArticle(Article updatedArticle)
         {
-            var articles = GetAllArticles();
-            var index = articles.FindIndex(a => a.Id == updatedArticle.Id);
-            if (index != -1)
-            {
-                articles[index] = updatedArticle;
-                SaveArticles(articles);
-            }
+            var filePath = Path.Combine(_articlesDirectory, $"{updatedArticle.Id}.json");
+            if (!File.Exists(filePath)) return;
+
+            var json = JsonSerializer.Serialize(updatedArticle, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(filePath, json);
         }
 
         public void DeleteArticle(string id)
         {
-            var articles = GetAllArticles();
-            articles.RemoveAll(a => a.Id == id);
-            SaveArticles(articles);
-        }
-
-        private void SaveArticles(List<Article> articles)
-        {
-            var json = JsonSerializer.Serialize(articles, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(_articlesPath, json);
+            var filePath = Path.Combine(_articlesDirectory, $"{id}.json");
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
         }
     }
 }
