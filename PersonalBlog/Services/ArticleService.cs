@@ -1,29 +1,31 @@
 ﻿using System.Text.Json;
 using PersonalBlog.Models;
-using PersonalBlog.Pages;
+using PersonalBlog.Utilities;
 
 namespace PersonalBlog.Services
 {
     public class ArticleService
     {
+        private readonly IFileSystem _fileSystem;
         private readonly string _articlesDirectory = "Data/Articles";
 
-        public ArticleService()
+        public ArticleService(IFileSystem fileSystem)
         {
-            if (!Directory.Exists(_articlesDirectory))
+            _fileSystem = fileSystem;
+            if (!_fileSystem.DirectoryExists(_articlesDirectory))
             {
-                Directory.CreateDirectory(_articlesDirectory);
+                _fileSystem.CreateDirectory(_articlesDirectory);
             }
         }
 
         public List<Article> GetAllArticles()
         {
-            var files = Directory.GetFiles(_articlesDirectory, "*.json");
+            var files = _fileSystem.GetFiles(_articlesDirectory, "*.json");
             var articles = new List<Article>();
 
             foreach (var file in files)
             {
-                var json = File.ReadAllText(file);
+                var json = _fileSystem.ReadAllText(file);
                 var article = JsonSerializer.Deserialize<Article>(json);
                 if (article != null)
                 {
@@ -33,6 +35,7 @@ namespace PersonalBlog.Services
 
             return articles.OrderByDescending(a => a.PublishedDate).ToList();
         }
+
 
         public Article? GetArticleById(string id)
         {
@@ -47,24 +50,25 @@ namespace PersonalBlog.Services
         {
             var filePath = Path.Combine(_articlesDirectory, $"{article.Id}.json");
             var json = JsonSerializer.Serialize(article, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(filePath, json);
+            _fileSystem.WriteAllText(filePath, json);
         }
 
         public void UpdateArticle(Article updatedArticle)
         {
             var filePath = Path.Combine(_articlesDirectory, $"{updatedArticle.Id}.json");
-            if (!File.Exists(filePath)) return;
+            if (!_fileSystem.FileExists(filePath)) return;
 
             var json = JsonSerializer.Serialize(updatedArticle, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(filePath, json);
+            _fileSystem.WriteAllText(filePath, json);
         }
+
 
         public void DeleteArticle(string id)
         {
             var filePath = Path.Combine(_articlesDirectory, $"{id}.json");
-            if (File.Exists(filePath))
+            if (_fileSystem.FileExists(filePath))
             {
-                File.Delete(filePath);
+                _fileSystem.DeleteFile(filePath);
             }
         }
     }
