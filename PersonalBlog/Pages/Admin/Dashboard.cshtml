@@ -1,5 +1,8 @@
 ﻿@page
 @model PersonalBlog.Pages.Admin.DashboardModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
 
 <h1>Admin Dashboard</h1>
 
@@ -15,7 +18,7 @@
             <td>@article.Title</td>
             <td>@article.PublishedDate.ToString("yyyy-MM-dd")</td>
             <td>
-                <a asp-page="/Admin/EditArticle" asp-route-id="@article.Id">Edit</a>
+                <a asp-page="/Admin/Edit" asp-route-id="@article.Id">Edit</a>
                 <form method="post" style="display:inline;">
                     <input type="hidden" name="id" value="@article.Id" />
                     <button type="submit" asp-page-handler="Delete">Delete</button>
@@ -25,4 +28,4 @@
     }
 </table>
 
-<a asp-page="/Admin/AddArticle">Add New Article</a>
+<a asp-page="/Admin/Add">Add New Article</a>

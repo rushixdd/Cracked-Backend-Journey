@@ -1,4 +1,21 @@
 ﻿@page
 @model PersonalBlog.Pages.Admin.EditModel
 @{
+    ViewData["Title"] = "Edit Article";
 }
+
+<h1>Edit Article</h1>
+
+<form method="post">
+    <input type="hidden" asp-for="Article.Id" />
+
+    <label>Title:</label>
+    <input type="text" asp-for="Article.Title" required />
+
+    <label>Content:</label>
+    <textarea asp-for="Article.Content" required></textarea>
+
+    <button type="submit">Update</button>
+</form>
+
+<a asp-page="/Admin/Dashboard">Back to Dashboard</a>
