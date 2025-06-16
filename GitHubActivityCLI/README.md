@@ -1,8 +1,8 @@
-﻿﻿# 📝 Task Tracker CLI
+﻿﻿# 📝 GitHub Activity CLI
 
-**Task Tracker CLI** is a simple command-line application to track your tasks efficiently.  
-It allows you to **add, update, delete, mark, list, search, and filter tasks** using a JSON-based storage system.
-Sample solution for the [Task Tracker CLI](https://roadmap.sh/projects/task-tracker) challenge from [roadmap.sh](https://roadmap.sh/).
+**GitHub Activity CLI** is a simple command-line interface (CLI) to fetch and display the recent activity of a GitHub user.  
+This project helps you practice working with APIs, handling JSON data, and building a CLI application.
+Sample solution for the [GitHub Activity CLI](https://roadmap.sh/projects/github-user-activity) challenge from [roadmap.sh](https://roadmap.sh/).
 
 ## 🚀 Features
 ✅ Fetches the recent GitHub activity of any user. <br>
