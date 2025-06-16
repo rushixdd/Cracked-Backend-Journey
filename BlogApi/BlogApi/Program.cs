@@ -1,14 +1,17 @@
-using BlogApi.Extensions;
+﻿using BlogApi.Extensions;
 using BlogApp.Interfaces;
 using BlogApp.Services;
 using BlogInfrastructure.Data;
 using BlogInfrastructure.Logging;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using BlogApp.Validators;
 
-SerilogLogger.Configure();
 try
 {
+    SerilogLogger.Configure();
     Log.Information(LogMessages.AppStarting);
     var builder = WebApplication.CreateBuilder(args);
     builder.Host.UseSerilog();
@@ -19,6 +22,8 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
     builder.Services.AddScoped<IBlogPostService, BlogPostService>();
+    builder.Services.AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters();
 
     var app = builder.Build();
 
@@ -37,4 +42,8 @@ catch (Exception ex)
 finally
 {
     Log.CloseAndFlush();
+}
+
+public partial class Program
+{
 }
