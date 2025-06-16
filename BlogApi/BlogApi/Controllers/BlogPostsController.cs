@@ -1,3 +1,5 @@
+using BlogApp.DTOs;
+using BlogApp.Interfaces;
 using BlogDomain.Entities;
 using BlogInfrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -6,28 +8,45 @@ using Microsoft.AspNetCore.Mvc;
 [Route("posts")]
 public class BlogPostsController : ControllerBase
 {
-    private readonly BlogDbContext _context;
-    public BlogPostsController(BlogDbContext context) => _context = context;
+    private readonly IBlogPostService _blogService;
+
+    public BlogPostsController(IBlogPostService blogService)
+    {
+        _blogService = blogService;
+    }
 
     [HttpPost]
-    public async Task<IActionResult> CreatePost([FromBody] BlogPost post)
+    public async Task<IActionResult> Create([FromBody] CreatePostDto dto)
     {
-        if (string.IsNullOrWhiteSpace(post.Title) || string.IsNullOrWhiteSpace(post.Content))
-            return BadRequest("Title and content are required.");
-
-        post.CreatedAt = DateTime.UtcNow;
-        post.UpdatedAt = DateTime.UtcNow;
-
-        _context.BlogPosts.Add(post);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetPost), new { id = post.Id }, post);
+        var created = await _blogService.CreatePostAsync(dto);
+        return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetPost(int id)
+    public async Task<IActionResult> Get(int id)
     {
-        var post = await _context.BlogPosts.FindAsync(id);
-        return post is null ? NotFound() : Ok(post);
+        var post = await _blogService.GetPostByIdAsync(id);
+        return post == null ? NotFound() : Ok(post);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll([FromQuery] string? term)
+    {
+        var posts = await _blogService.GetAllPostsAsync(term);
+        return Ok(posts);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] UpdatePostDto dto)
+    {
+        var updated = await _blogService.UpdatePostAsync(id, dto);
+        return updated == null ? NotFound() : Ok(updated);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var deleted = await _blogService.DeletePostAsync(id);
+        return deleted ? NoContent() : NotFound();
     }
 }
