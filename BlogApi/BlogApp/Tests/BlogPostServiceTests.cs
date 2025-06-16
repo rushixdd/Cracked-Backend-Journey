@@ -3,10 +3,11 @@ using BlogApp.Services;
 using BlogInfrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Xunit;
+using Moq;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace BlogApp.Tests
 {
@@ -15,6 +16,7 @@ namespace BlogApp.Tests
         private readonly BlogDbContext _dbContext;
         private readonly BlogPostService _service;
         private readonly ILogger<BlogPostService> _logger;
+        private readonly Mock<ILogger<BlogPostService>> _mockLogger;
 
         public BlogPostServiceTests()
         {
@@ -24,12 +26,8 @@ namespace BlogApp.Tests
                 .Options;
 
             _dbContext = new BlogDbContext(options);
-
-            // Add mock logger
-            var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-            _logger = loggerFactory.CreateLogger<BlogPostService>();
-
-            _service = new BlogPostService(_dbContext, _logger);
+            _mockLogger = new Mock<ILogger<BlogPostService>>();
+            _service = new BlogPostService(_dbContext, _mockLogger.Object);
         }
 
         [Fact]
@@ -142,6 +140,58 @@ namespace BlogApp.Tests
 
             Assert.NotEmpty(results);
             Assert.Contains(results, r => r.Title.Contains("C#"));
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_Should_Return_Null_For_Invalid_Id()
+        {
+            var result = await _service.GetPostByIdAsync(-1);
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task UpdateAsync_Should_Return_Null_For_NonExistent_Id()
+        {
+            var updateDto = new UpdatePostDto
+            {
+                Title = "Doesn't exist",
+                Content = "Nope",
+                Category = "Missing",
+                Tags = new List<string> { "none" }
+            };
+
+            var result = await _service.UpdatePostAsync(999, updateDto);
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task DeleteAsync_Should_Return_False_For_Invalid_Id()
+        {
+            var result = await _service.DeletePostAsync(-42);
+            Assert.False(result);
+        }
+
+        [Fact]
+        public async Task SearchAsync_Should_Return_Empty_If_No_Match()
+        {
+            var result = await _service.GetAllPostsAsync("NonMatchingTermXYZ");
+            Assert.NotNull(result);
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_Should_Log_Warning_For_Nonexistent_Id()
+        {
+            var result = await _service.GetPostByIdAsync(12345);
+
+            _mockLogger.Verify(
+                x => x.Log(
+                    LogLevel.Warning,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("not found")),
+                    It.IsAny<Exception>(),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()),
+                Times.Once);
         }
     }
 }
