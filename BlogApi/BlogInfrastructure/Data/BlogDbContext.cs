@@ -10,6 +10,7 @@ public class BlogDbContext : DbContext
 {
     public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options) { }
 
+    public DbSet<User> Users => Set<User>();
     public DbSet<BlogPost> BlogPosts => Set<BlogPost>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

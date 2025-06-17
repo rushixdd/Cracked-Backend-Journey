@@ -28,3 +28,69 @@ FROM "BlogPosts" AS b
 2025-06-16 20:22:45.942 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/swagger/v1/swagger.json - null null
 2025-06-16 20:22:45.960 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 17.3884ms
 2025-06-16 20:23:03.801 +05:30 [INF] Application is shutting down...
+2025-06-16 21:15:20.020 +05:30 [INF] Starting application...
+2025-06-16 21:15:21.069 +05:30 [INF] Now listening on: https://localhost:7150
+2025-06-16 21:15:21.073 +05:30 [INF] Now listening on: http://localhost:5087
+2025-06-16 21:15:21.118 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-16 21:15:21.120 +05:30 [INF] Hosting environment: Development
+2025-06-16 21:15:21.121 +05:30 [INF] Content root path: E:\DevlopementV2\Cracked-Backend-Journey\BlogApi\BlogApi
+2025-06-16 21:15:24.079 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/ - null null
+2025-06-16 21:15:24.217 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/ - 404 null application/json 141.1802ms
+2025-06-16 21:15:24.225 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7150/, Response status code: 404
+2025-06-16 21:15:30.526 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/posts - null null
+2025-06-16 21:15:30.537 +05:30 [INF] Executing endpoint 'BlogPostsController.GetAll (BlogApi)'
+2025-06-16 21:15:30.558 +05:30 [INF] Route matched with {action = "GetAll", controller = "BlogPosts"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.String) on controller BlogPostsController (BlogApi).
+2025-06-16 21:15:31.221 +05:30 [INF] Fetching all blog posts.
+2025-06-16 21:15:32.211 +05:30 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT b."Id", b."Category", b."Content", b."CreatedAt", b."Tags", b."Title", b."UpdatedAt"
+FROM "BlogPosts" AS b
+2025-06-16 21:15:32.340 +05:30 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+ListSelectIterator`2[[BlogDomain.Entities.BlogPost, BlogDomain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[BlogApp.DTOs.PostResponseDto, BlogApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-06-16 21:15:32.353 +05:30 [INF] Executed action BlogPostsController.GetAll (BlogApi) in 1788.2672ms
+2025-06-16 21:15:32.357 +05:30 [INF] Executed endpoint 'BlogPostsController.GetAll (BlogApi)'
+2025-06-16 21:15:32.371 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/posts - 200 null application/json; charset=utf-8 1845.7042ms
+2025-06-16 21:15:36.953 +05:30 [INF] Application is shutting down...
+2025-06-16 21:28:35.799 +05:30 [INF] Starting application...
+2025-06-16 21:28:36.778 +05:30 [INF] Now listening on: https://localhost:7150
+2025-06-16 21:28:36.781 +05:30 [INF] Now listening on: http://localhost:5087
+2025-06-16 21:28:36.843 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-16 21:28:36.844 +05:30 [INF] Hosting environment: Development
+2025-06-16 21:28:36.845 +05:30 [INF] Content root path: E:\DevlopementV2\Cracked-Backend-Journey\BlogApi\BlogApi
+2025-06-16 21:28:40.934 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/ - null null
+2025-06-16 21:28:41.072 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/ - 404 null application/json 143.1455ms
+2025-06-16 21:28:41.080 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7150/, Response status code: 404
+2025-06-16 21:28:45.844 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/.posts - null null
+2025-06-16 21:28:45.856 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/.posts - 404 null application/json 12.4687ms
+2025-06-16 21:28:45.862 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7150/.posts, Response status code: 404
+2025-06-16 21:29:02.898 +05:30 [INF] Application is shutting down...
+2025-06-16 23:13:41.309 +05:30 [INF] Starting application...
+2025-06-16 23:13:42.233 +05:30 [INF] Now listening on: https://localhost:7150
+2025-06-16 23:13:42.237 +05:30 [INF] Now listening on: http://localhost:5087
+2025-06-16 23:13:42.289 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-16 23:13:42.291 +05:30 [INF] Hosting environment: Development
+2025-06-16 23:13:42.292 +05:30 [INF] Content root path: E:\DevlopementV2\Cracked-Backend-Journey\BlogApi\BlogApi
+2025-06-16 23:13:50.037 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/swagger/index.html - null null
+2025-06-16 23:13:50.232 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/swagger/index.html - 200 null text/html;charset=utf-8 198.8163ms
+2025-06-16 23:13:50.316 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-16 23:13:50.332 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/_framework/aspnetcore-browser-refresh.js - 200 16499 application/javascript; charset=utf-8 16.1951ms
+2025-06-16 23:13:50.656 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/_vs/browserLink - null null
+2025-06-16 23:13:50.713 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/_vs/browserLink - 200 null text/javascript; charset=UTF-8 57.0043ms
+2025-06-16 23:13:50.844 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/swagger/v1/swagger.json - null null
+2025-06-16 23:13:50.865 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 20.2976ms
+2025-06-16 23:14:04.562 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7150/posts - application/json 87
+2025-06-16 23:14:04.571 +05:30 [INF] Executing endpoint 'BlogPostsController.Create (BlogApi)'
+2025-06-16 23:14:04.590 +05:30 [INF] Route matched with {action = "Create", controller = "BlogPosts"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Create(BlogApp.DTOs.CreatePostDto) on controller BlogPostsController (BlogApi).
+2025-06-16 23:14:05.195 +05:30 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2025-06-16 23:14:05.221 +05:30 [INF] Executed action BlogPostsController.Create (BlogApi) in 624.2192ms
+2025-06-16 23:14:05.223 +05:30 [INF] Executed endpoint 'BlogPostsController.Create (BlogApi)'
+2025-06-16 23:14:05.226 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7150/posts - 400 null application/problem+json; charset=utf-8 664.2557ms
+2025-06-16 23:15:19.719 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/posts - null null
+2025-06-16 23:15:19.727 +05:30 [INF] Executing endpoint 'BlogPostsController.GetAll (BlogApi)'
+2025-06-16 23:15:19.734 +05:30 [INF] Route matched with {action = "GetAll", controller = "BlogPosts"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.String) on controller BlogPostsController (BlogApi).
+2025-06-16 23:15:19.752 +05:30 [INF] Fetching all blog posts.
+2025-06-16 23:15:21.021 +05:30 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT b."Id", b."Category", b."Content", b."CreatedAt", b."Tags", b."Title", b."UpdatedAt"
+FROM "BlogPosts" AS b
+2025-06-16 23:15:21.147 +05:30 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+ListSelectIterator`2[[BlogDomain.Entities.BlogPost, BlogDomain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[BlogApp.DTOs.PostResponseDto, BlogApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-06-16 23:15:21.157 +05:30 [INF] Executed action BlogPostsController.GetAll (BlogApi) in 1419.7713ms
+2025-06-16 23:15:21.159 +05:30 [INF] Executed endpoint 'BlogPostsController.GetAll (BlogApi)'
+2025-06-16 23:15:21.170 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/posts - 200 null application/json; charset=utf-8 1450.7311ms
