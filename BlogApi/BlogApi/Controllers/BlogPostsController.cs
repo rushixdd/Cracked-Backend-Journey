@@ -1,9 +1,9 @@
 using BlogApp.DTOs;
 using BlogApp.Interfaces;
-using BlogDomain.Entities;
-using BlogInfrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize]
 [ApiController]
 [Route("posts")]
 public class BlogPostsController : ControllerBase
@@ -22,6 +22,7 @@ public class BlogPostsController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
@@ -29,6 +30,7 @@ public class BlogPostsController : ControllerBase
         return post == null ? NotFound() : Ok(post);
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] string? term)
     {
