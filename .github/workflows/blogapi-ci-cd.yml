@@ -1,0 +1,68 @@
+name: CI/CD Pipeline for BlogAPI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore BlogApi/BlogApi.sln
+
+    - name: Clean solution
+      run: dotnet clean BlogApi/BlogApi.sln
+
+    - name: Build solution
+      run: dotnet build BlogApi/BlogApi.sln --no-restore --configuration Release
+
+    - name: Run Integration Tests
+      run: dotnet test BlogApi/BlogApi.IntegrationTests/BlogApi.IntegrationTests.csproj --no-build --configuration Release --verbosity normal
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Publish BlogAPI
+      run: dotnet publish BlogApi/BlogApi/BlogApi.csproj -c Release -o publish
+
+    - name: Upload to Server
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.HOST_ORCINS_20241006 }}
+        username: ${{ secrets.USERNAME_ORCINS_20241006 }}
+        key: ${{ secrets.SSH_KEY_ORCINS_20241006 }}
+        source: "publish/*"
+        target: "~/blogapi"
+
+    - name: Restart BlogAPI on server
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.HOST_ORCINS_20241006 }}
+        username: ${{ secrets.USERNAME_ORCINS_20241006 }}
+        key: ${{ secrets.SSH_KEY_ORCINS_20241006 }}
+        script: |
+          cd ~/blogapi
+          sudo systemctl restart blogapi.service || dotnet BlogApi.dll &
