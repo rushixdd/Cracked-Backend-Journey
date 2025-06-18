@@ -22,11 +22,14 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore BlogApi/BlogApi.sln
 
+    - name: Clean solution
+      run: dotnet clean BlogApi/BlogApi.sln
+
     - name: Build solution
       run: dotnet build BlogApi/BlogApi.sln --no-restore --configuration Release
 
     - name: Run Integration Tests
-      run: dotnet test BlogApi/BlogApi.IntegrationTests/BlogApi.IntegrationTests.csproj --no-build --verbosity normal
+      run: dotnet test BlogApi/BlogApi.IntegrationTests/BlogApi.IntegrationTests.csproj --no-build --configuration Release --verbosity normal
 
   deploy:
     needs: build-and-test
