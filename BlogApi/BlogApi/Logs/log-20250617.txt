@@ -389,3 +389,63 @@ FROM "BlogPosts" AS b
 2025-06-17 17:42:19.731 +05:30 [INF] Request finished HTTP/2 GET https://192.168.1.12:5000/favicon.ico - 404 null application/json 6.6743ms
 2025-06-17 17:42:19.735 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://192.168.1.12:5000/favicon.ico, Response status code: 404
 2025-06-17 17:42:47.084 +05:30 [INF] Application is shutting down...
+2025-06-17 21:41:47.537 +05:30 [INF] Starting application...
+2025-06-17 21:41:48.267 +05:30 [INF] User profile is available. Using 'C:\Users\realr\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-06-17 21:41:48.563 +05:30 [INF] Now listening on: https://localhost:7150
+2025-06-17 21:41:48.564 +05:30 [INF] Now listening on: http://localhost:5087
+2025-06-17 21:41:48.565 +05:30 [INF] Now listening on: https://192.168.1.12:5000
+2025-06-17 21:41:48.616 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-06-17 21:41:48.617 +05:30 [INF] Hosting environment: Development
+2025-06-17 21:41:48.618 +05:30 [INF] Content root path: E:\DevlopementV2\Cracked-Backend-Journey\BlogApi\BlogApi
+2025-06-17 21:41:58.542 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/_framework/aspnetcore-browser-refresh.js - null null
+2025-06-17 21:41:58.565 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/_framework/aspnetcore-browser-refresh.js - 200 16499 application/javascript; charset=utf-8 28.4393ms
+2025-06-17 21:41:58.746 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/_vs/browserLink - null null
+2025-06-17 21:41:58.824 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/_vs/browserLink - 200 null text/javascript; charset=UTF-8 78.2727ms
+2025-06-17 21:41:58.882 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/swagger/v1/swagger.json - null null
+2025-06-17 21:41:58.953 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 71.3999ms
+2025-06-17 21:42:10.861 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7150/auth/login - application/json 52
+2025-06-17 21:42:11.014 +05:30 [INF] Executing endpoint 'BlogApi.Controllers.AuthController.Login (BlogApi)'
+2025-06-17 21:42:11.033 +05:30 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(BlogApp.DTOs.AuthRequest) on controller BlogApi.Controllers.AuthController (BlogApi).
+2025-06-17 21:42:12.743 +05:30 [INF] Executed DbCommand (50ms) [Parameters=[@__username_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."PasswordHash", u."Role", u."Username"
+FROM "Users" AS u
+WHERE u."Username" = @__username_0
+LIMIT 1
+2025-06-17 21:42:13.186 +05:30 [INF] Executing OkObjectResult, writing value of type 'BlogApp.DTOs.AuthResponse'.
+2025-06-17 21:42:13.194 +05:30 [INF] Executed action BlogApi.Controllers.AuthController.Login (BlogApi) in 2154.2997ms
+2025-06-17 21:42:13.198 +05:30 [INF] Executed endpoint 'BlogApi.Controllers.AuthController.Login (BlogApi)'
+2025-06-17 21:42:13.206 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7150/auth/login - 200 null application/json; charset=utf-8 2345.807ms
+2025-06-17 21:42:23.555 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/posts - null null
+2025-06-17 21:42:23.562 +05:30 [INF] Executing endpoint 'BlogPostsController.GetAll (BlogApi)'
+2025-06-17 21:42:23.571 +05:30 [INF] Route matched with {action = "GetAll", controller = "BlogPosts"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.String) on controller BlogPostsController (BlogApi).
+2025-06-17 21:42:23.577 +05:30 [INF] Fetching all blog posts.
+2025-06-17 21:42:23.642 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT b."Id", b."Category", b."Content", b."CreatedAt", b."Tags", b."Title", b."UpdatedAt"
+FROM "BlogPosts" AS b
+2025-06-17 21:42:23.668 +05:30 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+ListSelectIterator`2[[BlogDomain.Entities.BlogPost, BlogDomain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[BlogApp.DTOs.PostResponseDto, BlogApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-06-17 21:42:23.677 +05:30 [INF] Executed action BlogPostsController.GetAll (BlogApi) in 103.1882ms
+2025-06-17 21:42:23.680 +05:30 [INF] Executed endpoint 'BlogPostsController.GetAll (BlogApi)'
+2025-06-17 21:42:23.682 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/posts - 200 null application/json; charset=utf-8 126.6745ms
+2025-06-17 21:43:08.981 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/posts/1 - null null
+2025-06-17 21:43:08.991 +05:30 [INF] Executing endpoint 'BlogPostsController.Get (BlogApi)'
+2025-06-17 21:43:08.995 +05:30 [INF] Route matched with {action = "Get", controller = "BlogPosts"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Get(Int32) on controller BlogPostsController (BlogApi).
+2025-06-17 21:43:09.001 +05:30 [INF] Fetching blog post with ID 1.
+2025-06-17 21:43:09.042 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT b."Id", b."Category", b."Content", b."CreatedAt", b."Tags", b."Title", b."UpdatedAt"
+FROM "BlogPosts" AS b
+WHERE b."Id" = @__p_0
+LIMIT 1
+2025-06-17 21:43:09.047 +05:30 [INF] Executing OkObjectResult, writing value of type 'BlogApp.DTOs.PostResponseDto'.
+2025-06-17 21:43:09.049 +05:30 [INF] Executed action BlogPostsController.Get (BlogApi) in 51.2751ms
+2025-06-17 21:43:09.051 +05:30 [INF] Executed endpoint 'BlogPostsController.Get (BlogApi)'
+2025-06-17 21:43:09.053 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/posts/1 - 200 null application/json; charset=utf-8 71.6756ms
+2025-06-17 21:43:30.447 +05:30 [INF] Request starting HTTP/2 POST https://localhost:7150/posts - application/json 100
+2025-06-17 21:43:30.478 +05:30 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2025-06-17 21:43:30.483 +05:30 [INF] AuthenticationScheme: Bearer was challenged.
+2025-06-17 21:43:30.486 +05:30 [INF] Request finished HTTP/2 POST https://localhost:7150/posts - 401 0 null 38.787ms
+2025-06-17 21:43:48.927 +05:30 [INF] Request starting HTTP/2 GET https://localhost:7150/auth/login - null null
+2025-06-17 21:43:49.013 +05:30 [INF] Executing endpoint '405 HTTP Method Not Supported'
+2025-06-17 21:43:49.015 +05:30 [INF] Executed endpoint '405 HTTP Method Not Supported'
+2025-06-17 21:43:49.018 +05:30 [INF] Request finished HTTP/2 GET https://localhost:7150/auth/login - 405 0 null 90.411ms
+2025-06-17 21:44:04.458 +05:30 [INF] Application is shutting down...
