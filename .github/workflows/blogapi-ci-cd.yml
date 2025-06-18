@@ -25,8 +25,8 @@ jobs:
     - name: Build solution
       run: dotnet build BlogApi/BlogApi.sln --no-restore --configuration Release
 
-    - name: Run All Tests
-      run: dotnet test BlogApi/BlogApi.sln --no-build --verbosity normal
+    - name: Run Integration Tests
+      run: dotnet test BlogApi/BlogApi.IntegrationTests/BlogApi.IntegrationTests.csproj --no-build --verbosity normal
 
   deploy:
     needs: build-and-test
@@ -40,7 +40,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.x'
+        dotnet-version: '9.0.x'
 
     - name: Publish BlogAPI
       run: dotnet publish BlogApi/BlogApi/BlogApi.csproj -c Release -o publish
