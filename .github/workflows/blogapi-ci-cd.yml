@@ -25,11 +25,8 @@ jobs:
     - name: Build solution
       run: dotnet build BlogApi/BlogApi.sln --no-restore --configuration Release
 
-    - name: Run Unit Tests
-      run: dotnet test BlogApi/BlogApp/BlogApp.csproj --no-build --verbosity normal
-
-    - name: Run Integration Tests
-      run: dotnet test BlogApi/BlogApi.IntegrationTests/BlogApi.IntegrationTests.csproj --no-build --verbosity normal
+    - name: Run All Tests
+      run: dotnet test BlogApi/BlogApi.sln --no-build --verbosity normal
 
   deploy:
     needs: build-and-test
