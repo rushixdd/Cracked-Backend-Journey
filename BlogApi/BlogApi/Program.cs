@@ -38,7 +38,6 @@ try
     // ------------------- JWT Setup -------------------
     var jwtSection = builder.Configuration.GetSection("Jwt");
     var jwtSettings = jwtSection.Get<JwtSettings>() ?? throw new InvalidOperationException("JWT settings missing");
-
     builder.Services.Configure<JwtSettings>(jwtSection);
 
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

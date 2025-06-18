@@ -1,6 +1,7 @@
 ﻿using BlogApp.DTOs;
 using FluentAssertions;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace BlogApi.IntegrationTests;
@@ -12,6 +13,27 @@ public class BlogPostControllerTests : IClassFixture<CustomWebApplicationFactory
     public BlogPostControllerTests(CustomWebApplicationFactory factory)
     {
         _client = factory.CreateClient();
+        AuthenticateAsync().GetAwaiter().GetResult(); // authenticate once for all tests
+    }
+
+    private async Task AuthenticateAsync()
+    {
+        var request = new AuthRequest
+        {
+            Username = "postuser",
+            Password = "secure123"
+        };
+
+        // Register
+        await _client.PostAsJsonAsync("/auth/register", request);
+
+        // Login
+        var response = await _client.PostAsJsonAsync("/auth/login", request);
+        response.EnsureSuccessStatusCode();
+        var authResult = await response.Content.ReadFromJsonAsync<AuthResponse>();
+        // Add bearer token to client
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", authResult!.Token);
     }
 
     [Fact]
@@ -26,13 +48,13 @@ public class BlogPostControllerTests : IClassFixture<CustomWebApplicationFactory
         };
 
         var response = await _client.PostAsJsonAsync("/posts", postRequest);
-
         response.StatusCode.Should().Be(HttpStatusCode.Created);
 
         var responseData = await response.Content.ReadFromJsonAsync<CreatePostDto>();
         responseData.Should().NotBeNull();
         responseData!.Title.Should().Be("Integration Test Post");
     }
+
 
     [Fact]
     public async Task GetAllBlogPosts_ReturnsPosts()
